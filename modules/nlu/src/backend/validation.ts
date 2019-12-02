@@ -23,3 +23,10 @@ export const IntentDefCreateSchema = Joi.object().keys({
     .items(Joi.string())
     .default(['global'])
 })
+
+export const TestFileSchema = Joi.array().items(
+  Joi.object().keys({
+    utterance: Joi.string().required(),
+    tests: Joi.array().items(Joi.object().keys({ check: Joi.string().required() }))
+  })
+)

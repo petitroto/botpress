@@ -408,6 +408,15 @@ declare module 'botpress/sdk' {
       contexts: string[]
     }
 
+    export interface TestDefinition {
+      utterance: string
+      checks: NLUCheck[]
+    }
+
+    export type NLUCheck = IntentCheck | SlotCheck
+    export type IntentCheck = { check: 'intent'; value: string }
+    export type SlotCheck = { check: 'slot'; name: string; value: string }
+
     export interface Intent {
       name: string
       confidence: number

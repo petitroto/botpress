@@ -1,11 +1,13 @@
 import * as sdk from 'botpress/sdk'
 import { ScopedGhostService } from 'botpress/sdk'
+import { validate } from 'joi'
 import _ from 'lodash'
 import path from 'path'
 
 import { DucklingEntityExtractor } from './pipelines/entities/duckling_extractor'
 import { Result } from './tools/five-fold'
 import { Model, ModelMeta } from './typings'
+import { TestFileSchema } from './validation'
 
 const N_KEEP_MODELS = 25
 
@@ -64,6 +66,17 @@ export default class Storage {
     }
 
     await this.botGhost.upsertFile(this.intentsDir, `${intent}.json`, JSON.stringify(content, undefined, 2))
+  }
+
+  async getTests(): Promise<sdk.NLU.TestDefinition[]> {
+    try {
+      const fileContent = await this.botGhost.readFileAsObject<sdk.NLU.TestDefinition[]>('.', 'nlu.tests.json')
+      return await validate(fileContent, TestFileSchema, {
+        stripUnknown: true
+      })
+    } catch (e) {
+      return []
+    }
   }
 
   async updateIntent(intentName: string, content: Partial<sdk.NLU.IntentDefinition>) {

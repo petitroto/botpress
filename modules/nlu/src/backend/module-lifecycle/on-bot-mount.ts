@@ -80,6 +80,7 @@ export function getOnBotMount(state: NLUState) {
       4000,
       { leading: true }
     )
+
     // register trainOrLoad with ghost file watcher
     // we use local events so training occures on the same node where the request for changes enters
     const trainWatcher = bp.ghost.forBot(botId).onFileChanged(async f => {
@@ -90,7 +91,8 @@ export function getOnBotMount(state: NLUState) {
           await bp.distributed.clearLock(key)
           return state.broadcastCancelTraining(botId, lang)
         })
-        trainOrLoad()
+        // tslint:disable-next-line: no-floating-promises
+        trainOrLoad() // Floating promise on purpose
       }
     })
 
@@ -102,6 +104,7 @@ export function getOnBotMount(state: NLUState) {
       trainSessions: {}
     }
 
+    // tslint:disable-next-line: no-floating-promises
     trainOrLoad() // floating promise on purpose
   }
 }

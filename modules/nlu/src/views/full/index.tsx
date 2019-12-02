@@ -1,4 +1,4 @@
-import { Icon, Tab, Tabs, Tag } from '@blueprintjs/core'
+import { Button, Icon, Tab, Tabs, Tag } from '@blueprintjs/core'
 import { AxiosInstance } from 'axios'
 import { Container, SidePanel, SplashScreen } from 'botpress/ui'
 import _ from 'lodash'
@@ -127,6 +127,13 @@ const NLU: FC<Props> = props => {
             </Tag>
           </Tab>
         </Tabs>
+        <Button
+          onClick={() => {
+            console.log(' ')
+          }}
+        >
+          Run Tests
+        </Button>
       </SidePanel>
       <div className={style.container}>
         {!currentItemExists() && (

@@ -130,6 +130,13 @@ export default class E2 implements Engine2 {
     this.modelsByLang[model.languageCode] = model
   }
 
+  async runTests(tests: NLU.TestDefinition[]) {
+    for (const test of tests) {
+      // TODO
+      this.logger.info(`Running test for "${test.utterance}"`)
+    }
+  }
+
   private async _makePredictors(model: Model): Promise<Predictors> {
     const { input, output, artefacts } = model.data
     const tools = E2.tools

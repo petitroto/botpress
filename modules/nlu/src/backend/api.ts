@@ -156,6 +156,19 @@ export default async (bp: typeof sdk, state: NLUState) => {
     }
   })
 
+  router.post('/tests', async (req, res) => {
+    try {
+      const engine1 = state.nluByBot[req.params.botId].engine1 as ScopedEngine
+      const engine2 = state.nluByBot[req.params.botId].engine
+      const tests = await engine1.storage.getTests()
+      const results = await engine2.runTests(tests)
+      res.send(results)
+    } catch (err) {
+      bp.logger.attachError(err).error('Error running NLU tests')
+      res.status(400).send('Could not run tests')
+    }
+  })
+
   router.get('/contexts', async (req, res) => {
     const botId = req.params.botId
     const intents = await (state.nluByBot[botId].engine1 as ScopedEngine).storage.getIntents()

@@ -21,6 +21,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/slate": "^0.47.1",
     "@types/slate-react": "^0.22.5",
+    "@types/yn": "^3.1.0",
     "module-builder": "../../build/module-builder"
   },
   "dependencies": {

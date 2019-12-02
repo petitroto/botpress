@@ -146,6 +146,7 @@ export interface Engine2 {
   loadModel: Function
   train: Function
   predict: Function
+  runTests: Function
 }
 
 export interface NLUState {
