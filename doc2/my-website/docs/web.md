@@ -7,7 +7,7 @@ title: Website Embedding
 
 Embedding a bot to your existing site is quite straightforward. You will need to deploy your bot to a server or hosting provider and make it accessible via a URL. You will then be able to add the following script tag to the end of your `index.html` page.
 
-NB: Remember to replace <your-url-here> with the URL of your bot!
+NB: Remember to replace `<your-url-here>` with the URL of your bot!
 
 ```html
 <script src="<your-url-here>/assets/modules/channel-web/inject.js"></script>
