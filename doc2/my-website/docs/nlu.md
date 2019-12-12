@@ -207,7 +207,7 @@ An example of placeholder entity would be : Please tell **Sarah** that **she's l
 
 As of today we provide 2 types of custom entites: [pattern](#pattern-extraction) and [list](#list-extraction) entitites. To define a custom entity, head to the **Entity section** of the Understanding Module in your botpress studio side bar. From there you'll be able to define your custom entities that will be available for any input message treated by your chatbot. Go ahead and click on **create new entity**
 
-<img src="/docs/assets/nlu-create-entity.png">
+[](assets/nlu-create-entity.png)
 
 ### Sensitive Informations
 
