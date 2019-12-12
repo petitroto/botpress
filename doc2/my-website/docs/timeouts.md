@@ -3,12 +3,75 @@ id: timeouts
 title: Timeouts
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Occasionally a user may leave a conversation with your bot part way through the interaction, leaving it in an unwanted state.
 
-Duis et egestas libero, imperdiet faucibus ipsum. Sed posuere eget urna vel feugiat. Vivamus a arcu sagittis, fermentum urna dapibus, congue lectus. Fusce vulputate porttitor nisl, ac cursus elit volutpat vitae. Nullam vitae ipsum egestas, convallis quam non, porta nibh. Morbi gravida erat nec neque bibendum, eu pellentesque velit posuere. Fusce aliquam erat eu massa eleifend tristique.
+This could lead to the bot trying to answer the wrong question when the user returns to the conversation at a later time, which is a bad user experience.
 
-Sed consequat sollicitudin ipsum eget tempus. Integer a aliquet velit. In justo nibh, pellentesque non suscipit eget, gravida vel lacus. Donec odio ante, malesuada in massa quis, pharetra tristique ligula. Donec eros est, tristique eget finibus quis, semper non nisl. Vivamus et elit nec enim ornare placerat. Sed posuere odio a elit cursus sagittis.
+To prevent this Botpress has the ability to set the time-to-live on a session and how often these should be checked. You will find the following options in `data/global/botpress.config.json`.
 
-Phasellus feugiat purus eu tortor ultrices finibus. Ut libero nibh, lobortis et libero nec, dapibus posuere eros. Sed sagittis euismod justo at consectetur. Nulla finibus libero placerat, cursus sapien at, eleifend ligula. Vivamus elit nisl, hendrerit ac nibh eu, ultrices tempus dui. Nam tellus neque, commodo non rhoncus eu, gravida in risus. Nullam id iaculis tortor.
+```js
+dialogs: {
+  timeoutInterval: '2m', // How much time should pass before session is considered stale
+  janitorInterval: '10s' // How often do we check for stale sessions
+},
+```
 
-Nullam at odio in sem varius tempor sit amet vel lorem. Etiam eu hendrerit nisl. Fusce nibh mauris, vulputate sit amet ex vitae, congue rhoncus nisl. Sed eget tellus purus. Nullam tempus commodo erat ut tristique. Cras accumsan massa sit amet justo consequat eleifend. Integer scelerisque vitae tellus id consectetur.
+This means that if you started a conversation and then didn't respond for 2 minutes, the bot would set your session as expired.
+When you then resume the conversation, the bot will start from the beginning.
+
+## Receiving an event when a user timeout
+
+There is a [hook](../main/code#hooks) that is called before the user's session timeouts.
+
+## Performing actions on timeout
+
+When a user's conversation session expires, you are able to trigger an action by specifying the node's name or by having a dedicated timeout flow.
+
+There are 4 ways to handle this. The bot will invoke the first handler set, based on the order below:
+
+1. Using the `timeoutNode` key on a node.
+
+```js
+{
+  "version": "0.1",
+  ...
+  "nodes": [
+    {
+      ...
+      "timeoutNode": "<target-node-name>",
+    }
+  ]
+}
+```
+
+2. Using the `timeoutNode` key on the flow
+
+```js
+{
+  "version": "0.1",
+  "timeoutNode": "<target-node-name>",
+  ...
+}
+```
+
+3. By adding a node called `timeout` within a flow
+
+```js
+{
+  "version": "0.1",
+  "timeoutNode": "<target-node-name>",
+  "startNode": "entry",
+  "nodes": [
+    ...
+    {
+      "id": "d29fc6b771",
+      "name": "timeout",
+      "next": [],
+      "onEnter": [],
+      "onReceive": []
+    },
+  ]
+}
+```
+
+4. Having a dedicated timeout flow file called `timeout.flow.json`

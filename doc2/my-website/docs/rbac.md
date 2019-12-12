@@ -1,14 +1,85 @@
 ---
 id: rbac
-title: RBAC
+title: Configuring RBAC
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+> **Note**: This is a Botpress Pro feature
 
-Duis et egestas libero, imperdiet faucibus ipsum. Sed posuere eget urna vel feugiat. Vivamus a arcu sagittis, fermentum urna dapibus, congue lectus. Fusce vulputate porttitor nisl, ac cursus elit volutpat vitae. Nullam vitae ipsum egestas, convallis quam non, porta nibh. Morbi gravida erat nec neque bibendum, eu pellentesque velit posuere. Fusce aliquam erat eu massa eleifend tristique.
+**RBAC** (Role-Based Access Control) allows you to control what collaborators have access to.
 
-Sed consequat sollicitudin ipsum eget tempus. Integer a aliquet velit. In justo nibh, pellentesque non suscipit eget, gravida vel lacus. Donec odio ante, malesuada in massa quis, pharetra tristique ligula. Donec eros est, tristique eget finibus quis, semper non nisl. Vivamus et elit nec enim ornare placerat. Sed posuere odio a elit cursus sagittis.
+By default, Botpress ships with three roles (administrator, developer and content editor), but you can change those and create new ones.
 
-Phasellus feugiat purus eu tortor ultrices finibus. Ut libero nibh, lobortis et libero nec, dapibus posuere eros. Sed sagittis euismod justo at consectetur. Nulla finibus libero placerat, cursus sapien at, eleifend ligula. Vivamus elit nisl, hendrerit ac nibh eu, ultrices tempus dui. Nam tellus neque, commodo non rhoncus eu, gravida in risus. Nullam id iaculis tortor.
+## Assigning a role to a collaborator
 
-Nullam at odio in sem varius tempor sit amet vel lorem. Etiam eu hendrerit nisl. Fusce nibh mauris, vulputate sit amet ex vitae, congue rhoncus nisl. Sed eget tellus purus. Nullam tempus commodo erat ut tristique. Cras accumsan massa sit amet justo consequat eleifend. Integer scelerisque vitae tellus id consectetur.
+From the Administration dashboard, navigate to the "Collaborators" tab and click the "more" arrow on any collaborator to change its role to an existing role.
+
+![RBAC](assets/rbac.png)
+
+## Adding a new role
+
+In the `<data>/global/workspaces.json` file, you'll find the `roles` property, which is an array of all the roles you can assign to the collaborators on your workspace. You can add, remove and edit roles by modifying this array directly.
+
+### Rules
+
+Rules are executed sequentially from first to last, and the permission is checked at the end of applying all the rules.
+
+For example the following rules:
+
+1. `+r-w` on `*`
+2. `+w` on `bot.content`
+3. `-r` on `bot.flows`
+
+Means the user will _see_ everything but the flows, and won't be able to _change_ anything but flows.
+
+### Operations (op)
+
+| op  | description  |
+| --- | ------------ |
+| +r  | Grant read   |
+| -r  | Revoke read  |
+| +w  | Grant write  |
+| -w  | Revoke write |
+
+### Available Resources (res)
+
+| res               | description                                  |
+| ----------------- | -------------------------------------------- |
+| \_                | \_                                           |
+| bot.\*            | All bots inside the workspace                |
+| bot.logs          | The runtime logs                             |
+| bot.notifications | Notifications                                |
+| bot.skills        | The flow skills                              |
+| bot.media         | File uploads (via the CMS)                   |
+| bot.content       | The CMS elements (what the bot says)         |
+| bot.flows         | The flow editor                              |
+| bot.information   | Information about the bot                    |
+| \_                | \_                                           |
+| admin.\*          | The admin dashboard (/admin)                 |
+| admin.users       | Admin collaborators                          |
+| admin.roles       | Assigning roles ro collaborators             |
+| admin.bots        | Creating bots and changing their information |
+| \_                | \_                                           |
+| module.\*         | Global access to all modules                 |
+| module.MODULE_ID  |                                              |
+
+For now, modules only support a single top-level resource **and one operation (write)**. The resource path is defined as `module.MODULE_ID`, for example `module.hitl` or `module.code-editor`.
+
+### Example
+
+```json
+{
+  "id": "hitl",
+  "name": "Human in the Loop",
+  "description": "Can view and respond to users by using the HITL module",
+  "rules": [
+    {
+      "res": "*",
+      "op": "+r"
+    },
+    {
+      "res": "module.hitl",
+      "op": "+r+w"
+    }
+  ]
+}
+```

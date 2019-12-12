@@ -2,12 +2,34 @@
 id: emulator
 title: Emulator
 ---
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Duis et egestas libero, imperdiet faucibus ipsum. Sed posuere eget urna vel feugiat. Vivamus a arcu sagittis, fermentum urna dapibus, congue lectus. Fusce vulputate porttitor nisl, ac cursus elit volutpat vitae. Nullam vitae ipsum egestas, convallis quam non, porta nibh. Morbi gravida erat nec neque bibendum, eu pellentesque velit posuere. Fusce aliquam erat eu massa eleifend tristique.
+You can debug your bot conversation by using the built-in Emulator Window. The emulator is meant for developers to debug the conversations and is not meant to replicate what the end-users will see visually (i.e. some messages will not render properly). To visualize the full user experience, you should use the Web Channel directly.
 
-Sed consequat sollicitudin ipsum eget tempus. Integer a aliquet velit. In justo nibh, pellentesque non suscipit eget, gravida vel lacus. Donec odio ante, malesuada in massa quis, pharetra tristique ligula. Donec eros est, tristique eget finibus quis, semper non nisl. Vivamus et elit nec enim ornare placerat. Sed posuere odio a elit cursus sagittis.
+To open the Emulator, you can:
 
-Phasellus feugiat purus eu tortor ultrices finibus. Ut libero nibh, lobortis et libero nec, dapibus posuere eros. Sed sagittis euismod justo at consectetur. Nulla finibus libero placerat, cursus sapien at, eleifend ligula. Vivamus elit nisl, hendrerit ac nibh eu, ultrices tempus dui. Nam tellus neque, commodo non rhoncus eu, gravida in risus. Nullam id iaculis tortor.
+- Press <kbd>e</kbd> anywhere in the application
+- Click the Emulator icon in the status bar
 
-Nullam at odio in sem varius tempor sit amet vel lorem. Etiam eu hendrerit nisl. Fusce nibh mauris, vulputate sit amet ex vitae, congue rhoncus nisl. Sed eget tellus purus. Nullam tempus commodo erat ut tristique. Cras accumsan massa sit amet justo consequat eleifend. Integer scelerisque vitae tellus id consectetur.
+![Emulator Window](assets/emulator_icons.png)
+
+You can close the Emulator by pressing <kbd>ESC</kbd> or by clicking again on the emulator icon.
+
+## Resending the same messages
+
+Using <kbd>↑</kbd> or <kbd>↓</kbd> on your keyboard in the text input will allow you to quickly navigate and re-send previously sent messages. The last 20 messages sent to this bot are persisted in your browser storage.
+
+## Payload Inspector
+
+The payload inspector lets you see and understand what the bot understood and why it took the decision he chose. Inside the emulator, you will see the metadata about [NLU](nlu), the conversation [State](dialog) and the raw responses.
+
+![Emulator Window](assets/emulator_win_inspector.png)
+
+![Emulator Window](assets/emulator_win_raw_json.png)
+
+## Sessions
+
+All the messages you send using the Emulator will come from the same user from the bot's perspective.
+
+To start a conversation from scratch, you can press the **"New Session"** button in the toolbar of the Emulator window. Doing this will generate a new user, so all previously set variables and state will be forgotten by the bot.
+
+![Emulator Window](assets/emulator_win_newsession.jpg)
