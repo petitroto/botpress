@@ -7,7 +7,20 @@
 
 module.exports = {
   docs: {
-    'Building Bots': ['flows', 'transitions', 'timeouts', 'intents', 'utterances', 'emulator'],
+    'Getting Started': ['flows'],
+    'Building Bots': [
+      'flows',
+      'transitions',
+      'timeouts',
+      'intents',
+      'utterances',
+      'emulator',
+      {
+        type: 'category',
+        label: 'Docs',
+        items: ['configuration', 'rbac']
+      }
+    ],
     'Deploying Botpress': ['configuration'],
     'Managing Botpress': ['rbac']
   }
