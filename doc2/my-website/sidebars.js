@@ -7,7 +7,7 @@
 
 module.exports = {
   docs: {
-    'Getting Started': ['flows'],
+    'Getting Started': ['introduction', 'installation', 'quickstart', 'updating', 'troubleshoot'],
     'Building Bots': [
       'flows',
       'transitions',
