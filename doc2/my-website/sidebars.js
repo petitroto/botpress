@@ -18,8 +18,6 @@ module.exports = {
     ],
     'Building Bots': [
       'overview',
-      'flows',
-      'transitions',
       'timeouts',
       'intents',
       'emulator',
@@ -47,7 +45,6 @@ module.exports = {
       'existing-backend',
       'external-api',
       'faq',
-      'flows',
       'hitl',
       'i18n',
       'intent-matching',
@@ -64,7 +61,6 @@ module.exports = {
       'skill-call-api',
       'skill-slot',
       'timeouts',
-      'transitions',
       'uipath'
     ],
     'Managing Botpress': [
