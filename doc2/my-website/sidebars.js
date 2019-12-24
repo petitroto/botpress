@@ -22,10 +22,13 @@ module.exports = {
       'transitions',
       'timeouts',
       'intents',
-      'utterances',
       'emulator',
+      {
+        type: 'category',
+        label: 'Channels',
+        items: ['channels', 'web', 'teams', 'slack', 'converse', 'messenger', 'telegram']
+      },
       'carousel-postback',
-      'channels',
       'chat-3rd-party-OAuth',
       'code',
       'content',
@@ -37,7 +40,6 @@ module.exports = {
       'code',
       'content',
       'contextual-faq',
-      'converse',
       'custom-module',
       'debug',
       'dialog',
@@ -54,7 +56,6 @@ module.exports = {
       'jump-to',
       'listen-for-file-changes',
       'memory',
-      'messenger',
       'migrate',
       'module',
       'nlu',
@@ -62,14 +63,9 @@ module.exports = {
       'shortlinks',
       'skill-call-api',
       'skill-slot',
-      'slack',
-      'teams',
-      'telegram',
       'timeouts',
       'transitions',
-      'uipath',
-      'utterances',
-      'web'
+      'uipath'
     ],
     'Managing Botpress': [
       'hosting',
