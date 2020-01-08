@@ -120,7 +120,8 @@ export default class Utterance {
 
     for (const token of this.tokens) {
       const norm = computeNorm(token.vectors as number[])
-      if (norm <= 0) {
+      if (norm <= 0 || !token.isWord) {
+        // ignore special char tokens in sentence embeddings
         continue
       }
 
@@ -250,7 +251,7 @@ export async function buildUtteranceBatch(
   language: string,
   tools: Tools
 ): Promise<Utterance[]> {
-  const parsed = raw_utterances.map(u => parseUtterance(replaceConsecutiveSpaces(u)))
+  const parsed = raw_utterances.map(_.flow([replaceConsecutiveSpaces, parseUtterance]))
   const tokenUtterances = await tools.tokenize_utterances(parsed.map(p => p.utterance), language)
   const POSUtterances = tools.partOfSpeechUtterances(tokenUtterances, language)
   const uniqTokens = _.uniq(_.flatten(tokenUtterances))
