@@ -31,6 +31,7 @@ import { ConverseRouter } from './routers/bots/converse'
 import { HintsRouter } from './routers/bots/hints'
 import { isDisabled } from './routers/conditionalMiddleware'
 import { InvalidExternalToken, PaymentRequiredError } from './routers/errors'
+import { SdkApiRouter } from './routers/sdk/router'
 import { ShortLinksRouter } from './routers/shortlinks'
 import { hasPermissions, monitoringMiddleware, needPermissions } from './routers/util'
 import { GhostService } from './services'
@@ -84,6 +85,7 @@ export default class HTTPServer {
   private readonly shortlinksRouter: ShortLinksRouter
   private converseRouter!: ConverseRouter
   private hintsRouter!: HintsRouter
+  private readonly sdkApiRouter!: SdkApiRouter
   private _needPermissions: (
     operation: string,
     resource: string
@@ -159,6 +161,7 @@ export default class HTTPServer {
       this.jobService
     )
     this.shortlinksRouter = new ShortLinksRouter(this.logger)
+    this.sdkApiRouter = new SdkApiRouter(this.logger)
     this.botsRouter = new BotsRouter({
       actionService,
       botService,
@@ -217,6 +220,7 @@ export default class HTTPServer {
   async start() {
     const botpressConfig = await this.configProvider.getBotpressConfig()
     const config = botpressConfig.httpServer
+    await this.sdkApiRouter.initialize()
 
     /**
      * The loading of language models can take some time, access to Botpress is disabled until it is completed
@@ -283,6 +287,7 @@ export default class HTTPServer {
     this.app.use(`${BASE_API_PATH}/modules`, this.modulesRouter.router)
     this.app.use(`${BASE_API_PATH}/action-servers`, this.actionServersRouter.router)
     this.app.use(`${BASE_API_PATH}/bots/:botId`, this.botsRouter.router)
+    this.app.use(`${BASE_API_PATH}/sdk`, this.sdkApiRouter.router)
     this.app.use(`/s`, this.shortlinksRouter.router)
 
     this.app.use((err, req, res, next) => {
