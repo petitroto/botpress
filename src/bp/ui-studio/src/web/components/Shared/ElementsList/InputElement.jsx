@@ -23,7 +23,7 @@ export class InputElement extends React.Component {
   }
 
   handleKeyDown = event => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
       if (event.altKey && this.props.allowMultiline) {
         this.setState({ text: this.state.text + '\n' }, this.updateTextareaHeight)
       } else if (!event.altKey && this.inputNotEmpty) {
