@@ -70,7 +70,11 @@ class ScenarioRecorder extends React.Component {
                   name="scenarioName"
                   placeholder={'Name of your scenario'}
                   value={this.state.scenarioName}
-                  onKeyDown={e => e.key === 'Enter' && this.saveScenario()}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+                      this.saveScenario()
+                    }
+                  }}
                   onChange={e => {
                     this.setState({ scenarioName: e.target.value })
                   }}
